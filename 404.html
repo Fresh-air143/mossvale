@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mossvale — redirecting…</title>
+<style>
+  body { margin:0; background:#0a0d14; color:#dfe7f2; font:16px/1.6 -apple-system,"Segoe UI",Roboto,sans-serif; display:flex; min-height:100vh; align-items:center; justify-content:center; }
+  .box { max-width:460px; text-align:center; padding:32px; }
+  .mono { background:#111827; border:1px solid #1f2a3d; border-radius:8px; padding:12px 16px; margin:16px 0; font:13px/1.5 monospace; color:#26a6a0; word-break:break-all; }
+  a { color:#4fd1c5; }
+</style>
+</head>
+<body>
+<div class="box">
+  <h1 id="status">Redirecting to your local app…</h1>
+  <p id="detail">Your browser is returning the authorization code to the Mossvale
+  desktop application running on this machine. You can close this tab once your
+  app confirms success.</p>
+  <div class="mono" id="target">http://localhost:8391/callback</div>
+  <p>If nothing happens, make sure the Mossvale app is running and waiting for
+  authorization, then restart the flow from the app.</p>
+  <p><a href="/mossvale/">Mossvale home</a></p>
+</div>
+<script>
+(function () {
+  var q = location.search || "";
+  var h = location.hash || "";
+  if (q.indexOf("code=") !== -1 || q.indexOf("error") !== -1) {
+    document.getElementById("target").textContent = "http://localhost:8391/callback" + (q + h);
+    location.replace("http://localhost:8391/callback" + q + h);
+  } else if (q || h) {
+    location.replace("http://localhost:8391/callback" + q + h);
+  } else {
+    document.getElementById("status").textContent = "Page not found";
+    document.getElementById("detail").textContent =
+      "This address is the OAuth return path for the Mossvale desktop app. " +
+      "It expects an authorization response in the URL parameters.";
+  }
+})();
+</script>
+</body>
+</html>
